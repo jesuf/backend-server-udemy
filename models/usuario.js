@@ -18,4 +18,7 @@ var usuarioSchema = new mongoose.Schema({
 // en este caso con poner email en su lugar, sería suficiente
 usuarioSchema.plugin(uniqueValidator, {message: 'El campo {PATH} es único.'});
 
-module.exports = mongoose.model('Usuario', usuarioSchema);
+// el nombre que le damos al modelo, debe coincidir con el nombre que le dimos a la tabla (coleccion)
+// en la BD pero en singular y no es case sensitive
+// así pues, el modelo definido como 'usuario'(o 'USUARIO' o 'Usuario') para el esquema usuarioSchema correspondería a la colección 'usuarios' en la BD
+module.exports = mongoose.model('usuario', usuarioSchema);

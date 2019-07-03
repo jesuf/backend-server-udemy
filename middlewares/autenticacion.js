@@ -3,7 +3,7 @@ var SECRET = require('../config/config');
 
 // Abstraemos la funcion de callback que de la otra forma se llamaba cuando la peticion coincidia con la ruta
 // Asi podemos pasarla como parámetro en cada peticion concreta, PUT, POST y DELETE para que se ejecute antes del otro callback
-// es decir, primero pasamos por aqui, y cuando terminamos, se ejecuta el cuerpo de cada peticion, que es el segundo callback
+// es decir, primero pasamos por aqui, y cuando terminamos, se ejecuta el cuerpo de peticion o logica de controlador, que es el segundo callback
 var verificarToken = (req, res, next) => {
     var token = req.query.token;
 

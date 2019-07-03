@@ -12,6 +12,10 @@ var Usuario = require('../models/usuario');
 // ===============================
 app.get('/', (req, res) => {
 
+    // convertimos a number la query desde o establecemos a 0 si no viene valor
+    var desde = Number(req.query.desde || 0);
+    
+
     // usamos el modelo para filtrar la respuesta
     Usuario.find({/* filtramos registros aqui */}, /* filtramos campos aqui */'nombre email img role', (error, usuarios) => {
         // error en la funcion find. Internal Server Error
@@ -22,11 +26,19 @@ app.get('/', (req, res) => {
                 ...error
             });
         }
-        res.status(200).json({
-            ok: true,
-           usuarios
+
+        // recogemos el número de documentos de la colección
+        Usuario.countDocuments({}, (error, total) => {
+            res.status(200).json({
+                ok: true,
+                usuarios,
+                total
+            });
         });
-    });
+        
+        // nos saltamos el numero desde y limitamos a 5 los resultados
+        // con esto conseguimos realizar una paginación mandando 5 más cada vez en el desde
+    }).skip(desde).limit(5);
 });
 // GET no requiere validacion de token, aunque podriamos requerirla pero no es tan necesario ya que no se realizan cambios sobre la BD
 
