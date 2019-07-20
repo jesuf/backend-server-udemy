@@ -100,7 +100,7 @@ function subirPorColeccion(coleccion, id, nombreImagen, res) {
                 return res.status(400).send(error);
             } 
 
-            // si es un usuario, no quremos mostrar su contraseña
+            // si es un usuario, no queremos mostrar su contraseña
             if(documentoActualizado.password){
                 documentoActualizado.password = "contraseña";
             }

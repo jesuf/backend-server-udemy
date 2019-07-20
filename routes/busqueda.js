@@ -64,7 +64,7 @@ app.get('/todo/:termino', (req, res, next) => {
     var termino = req.params.termino;
     var regex = new RegExp(termino, 'i');
 
-    // ejecutamos las busquedas en promesas y cuando ambas se hayan resuelto, recogemos las respuestas en un array
+    // ejecutamos las busquedas en promesas y cuando todas se hayan resuelto, recogemos las respuestas en un array
     Promise.all([
         buscarHospitales(regex),
         buscarMedicos(regex),

@@ -12,6 +12,7 @@ var usuarioSchema = new mongoose.Schema({
     password: {type: String, required: [true, 'La contraseña es necesaria.']},
     img: {type: String},
     role: {type: String, required: true, default: 'USER_ROLE', enum: rolesValidos},
+    google: {type: Boolean, default: false}
 });
 
 // {PATH} lee el campo del esquema. Esto es util cuando hay varios campos que son unicos

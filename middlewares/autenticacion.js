@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-var SECRET = require('../config/config');
+var SECRET = require('../config/config').SECRET;
 
 // Abstraemos la funcion de callback que de la otra forma se llamaba cuando la peticion coincidia con la ruta
 // Asi podemos pasarla como parámetro en cada peticion concreta, PUT, POST y DELETE para que se ejecute antes del otro callback
@@ -8,7 +8,9 @@ var verificarToken = (req, res, next) => {
     var token = req.query.token;
 
     jwt.verify(token, SECRET, (error, decodedToken) => {
-        // error en la verificacion. Unauthorized
+        // error en la verificacion. Unauthorized (o mas bien Unauthenticated)
+        // el 401 se usa cuando falla la autenticación o el usuario necesita autenticarse
+        // y el 403 para cuando el usuario está autenticado pero aun asi no tiene permiso para ejecutar la solicitud
         if(error) {
             return res.status(401).json({
                 ok: false,
