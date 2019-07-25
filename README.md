@@ -10,4 +10,4 @@ npm install
 
 ## Dentro de Google-Signin-demo
 
-Pequeño ejercicio para probar la autenticación de Google en un Front-end básico pero funcinal.
+Pequeño ejercicio para probar la autenticación de Google en un Front-end básico pero funcional.

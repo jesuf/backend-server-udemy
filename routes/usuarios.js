@@ -80,7 +80,7 @@ app.use('/', (req, res, next) => {
 // ===============================
 // Crear un usuario nuevo
 // ===============================
-app.post('/', verificarToken, (req, res) => {
+app.post('/', (req, res) => {
     
     // recogemos el cuerpo de la peticion ya parseado
     var body = req.body;

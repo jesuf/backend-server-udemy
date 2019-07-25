@@ -11,7 +11,7 @@ var Usuario = require('../models/usuario');
 
 // Creamos una instancia de OAuth2Client mediante la librería instalada como paquete de node y la clave de nuestra app
 var CLIENT_ID = require('../config/config').CLIENT_ID;
-const {OAuth2Client} = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 
 
@@ -29,7 +29,7 @@ async function verify(token){
     }).catch(error => 
         // error en la verificacion. Unauthorized (o mas bien Unauthenticated)
         // el 401 se usa cuando falla la autenticación o el usuario necesita autenticarse
-        // y el 403 para cuando el usuario está autenticado pero aun asi no tiene permiso para ejecutar la solicitud
+        // y el 403 (Forbidden) para cuando el usuario está autenticado pero aun asi no tiene permiso para ejecutar la solicitud
         res.status(401).json({
             ok: false,
             mensaje: "Error verificando el token.",
@@ -96,13 +96,15 @@ app.post('/google', async (req, res) => {
             // si el usuario ya estaba registrado en la BD, comprobamos si es un usuario de google o normal
             // y si es normal lo mandamos autenticar por el método normal
             if(usuario.google){
+                var expira = 14400;
                 // Crear un Json Web Token mediante un payload, un secret y unas opciones
-                var token = jwt.sign({usuario: usuario}, SECRET, {expiresIn: 14400 /* 4horas */});
+                var token = jwt.sign({usuario: usuario}, SECRET, {expiresIn: expira /* 4horas */});
                     
                 res.status(200).json({
                     ok: true,
                     usuario,
-                    token
+                    token,
+                    expira
                 });
             }else{
                 return res.status(400).json({
@@ -150,13 +152,15 @@ app.post('/', (req, res) => {
         }
 
         usuario.password = 'contraseña';
+        var expira = 14400;
         // Crear un Json Web Token mediante un payload, un secret y unas opciones
-        var token = jwt.sign({usuario: usuario}, SECRET, {expiresIn: 14400 /* 4horas */});
+        var token = jwt.sign({usuario: usuario}, SECRET, {expiresIn:expira /* 4horas */});
         
         res.status(200).json({
             ok: true,
             usuario,
-            token
+            token,
+            expira
         });
     });
 });

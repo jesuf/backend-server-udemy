@@ -10,12 +10,20 @@ var busquedaRoutes = require('./routes/busqueda');
 var uploadRoutes = require('./routes/upload');
 var imgRoutes = require('./routes/imagenes');
 
-// si no hacemos esto sale el error:
+// si no hacemos esto sale el warning:
 // DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
 mongoose.set('useCreateIndex', true);
 
 // Inicializar variables
 var app = express();
+
+// Activamos el CORS (Cross-Origin Resource Sharing) para poder recibir peticiones de dominios externos
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "http://localhost:4200"); // si queremos aceptar todos los dominios, pondriamos "*"
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow", "POST, GET, PUT, DELETE, OPTIONS");
+    next();
+});
 
 
  /*Documentación: https://expressjs.com/es/guide/writing-middleware.html
@@ -73,7 +81,7 @@ app.use('/', appRoutes);
 
 // Conexión al servicio o daemon (mongod.exe) de la base de datos MongoDB (que ya deberia estar corriendo) mediante mongoose,
 // que nos permitirá realizar cambios en ella, tal como si corriesemos mongo.exe e introdujesemos instrucciones en la consola
-// pero teniendo las ventajas de mongoose: // esquemas, callbacks, etc. 
+// pero teniendo las ventajas de mongoose: esquemas, callbacks, etc. 
 // En definitiva, mongoose es un ODM (Object Document Mapper) a traves del cual tambien podemos usar funciones middleware
 // en sus esquemas para definir comportamientos antes y despues de realizar consultas sobre la BD mediante pre y post. https://mongoosejs.com/docs/middleware.html
 mongoose.connect('mongodb://localhost:27017/hospitalDB', {useNewUrlParser: true}, (err) => {
