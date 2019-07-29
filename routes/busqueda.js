@@ -9,10 +9,10 @@ var Usuario = require('../models/usuario');
 // ===============================
 // Busqueda por coleccion
 // ===============================
-app.get('/coleccion/:coleccion/:termino', (req, res, next) => {
+app.get('/coleccion/:coleccion', (req, res, next) => {
 
     // recogemos el termino de la url y creamos una expresion regular para cualquier cosa que contenga eso y sea case insensitive
-    var termino = req.params.termino;
+    var termino = req.query.termino;
     var regex = new RegExp(termino, 'i');
 
     // recogemos el nombre de la coleccion en la que queremos buscar
@@ -58,10 +58,10 @@ app.get('/coleccion/:coleccion/:termino', (req, res, next) => {
 // ===============================
 // Busqueda general
 // ===============================
-app.get('/todo/:termino', (req, res, next) => {
+app.get('/todo', (req, res, next) => {
 
     // recogemos el termino de la url y creamos una expresion regular para cualquier cosa que contenga eso y sea case insensitive
-    var termino = req.params.termino;
+    var termino = req.query.termino;
     var regex = new RegExp(termino, 'i');
 
     // ejecutamos las busquedas en promesas y cuando todas se hayan resuelto, recogemos las respuestas en un array
@@ -121,7 +121,7 @@ function buscarUsuarios(regex) {
     
     return new Promise((resolve, reject) => {
 
-        Usuario.find({}, 'nombre email', (error, usuarios) => {
+        Usuario.find({}, 'nombre email role img google', (error, usuarios) => {
             // error en la funcion find. Internal Server Error
             if (error) {
                 reject(error);

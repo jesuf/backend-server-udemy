@@ -17,7 +17,7 @@ var usuarioSchema = new mongoose.Schema({
 
 // {PATH} lee el campo del esquema. Esto es util cuando hay varios campos que son unicos
 // en este caso con poner email en su lugar, sería suficiente
-usuarioSchema.plugin(uniqueValidator, {message: 'El campo {PATH} es único.'});
+usuarioSchema.plugin(uniqueValidator, {message: 'El campo {PATH} ya existe.'});
 
 // el nombre que le damos al modelo, debe coincidir con el nombre que le dimos a la tabla (coleccion)
 // en la BD pero en singular y no es case sensitive

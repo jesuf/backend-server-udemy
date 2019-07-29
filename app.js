@@ -21,7 +21,7 @@ var app = express();
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:4200"); // si queremos aceptar todos los dominios, pondriamos "*"
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow", "POST, GET, PUT, DELETE, OPTIONS");
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
 });
 
@@ -78,6 +78,15 @@ app.use('/busqueda', busquedaRoutes);
 app.use('/upload', uploadRoutes); 
 app.use('/imagenes', imgRoutes); 
 app.use('/', appRoutes);
+// En el caso de que la ruta buscada no exista, siempre se emitiria un 404 incluso sin especificar este middleware,
+// pero de esta forma podemos customizar el objeto error de respuesta y añadir propiedades como un mensaje personalizado.
+// El objeto aquí definido, se añade como propiedad error al objeto error inicial por lo que accederiamos mediante error.error.propiedad
+app.get('*', (req, res) => {
+    return res.status(404).json({
+        ok: false,
+        mensaje: 'Recurso no encontrado'
+    });
+});
 
 // Conexión al servicio o daemon (mongod.exe) de la base de datos MongoDB (que ya deberia estar corriendo) mediante mongoose,
 // que nos permitirá realizar cambios en ella, tal como si corriesemos mongo.exe e introdujesemos instrucciones en la consola

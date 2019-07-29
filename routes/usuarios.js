@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     
 
     // usamos el modelo para filtrar la respuesta
-    Usuario.find({/* filtramos registros aqui */}, /* filtramos campos aqui */'nombre email img role', (error, usuarios) => {
+    Usuario.find({/* filtramos registros aqui */}, /* filtramos campos aqui */'nombre email img role google', (error, usuarios) => {
         // error en la funcion find. Internal Server Error
         if (error) {
             return res.status(500).json({
@@ -166,6 +166,12 @@ app.put('/:id', verificarToken, (req, res) => {
         // establecemos los datos recibidos en el usuario existente
         usuario.nombre = body.nombre;
         usuario.email = body.email;
+
+        // recogemos el rol solo si ha sido enviado, es decir,
+        // si estamos editando el usuario desde el panel de administracion y no desde el perfil
+        if(body.role) {
+            usuario.role = body.role;
+        }
 
         usuario.save((error, usuarioActualizado) => {
             // error de la funcion save que se debe a que los datos recibidos no sirven para actualizar un usuario. Bad Request

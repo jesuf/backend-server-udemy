@@ -20,13 +20,13 @@ app.get('/:coleccion/:img', (req, res) => {
     }
 
     // necesitamos la ruta entera del archivo para enviarla por sendFile y esto puede variar según donde estemos corriendo el servidor
-    //__dirname retorna la ruta absoluta del directorio en el que estamos, routes
+    // __dirname retorna la ruta absoluta del directorio en el que estamos, routes
     // resolve() interpreta las cadenas que se le pasan, subiendo un piso si le ponemos ..
-    // y poniendo \ (windows) en lugar de / (otros SO) si es necesario, segun el sistema que nos encontremos
+    // y poniendo \ (windows) en lugar de / (otros SO) si es necesario, segun el SO del servidor
     var pathImagen = pathHelper.resolve(__dirname, '../uploads/' + coleccion + '/' + img);
 
     if(!fs.existsSync(pathImagen)){
-        pathImagen = pathHelper.resolve(__dirname + '../assets/no-img.jpg');
+        pathImagen = pathHelper.resolve(__dirname, '../assets/no-img.jpg');
     }
     res.sendFile(pathImagen, error => error);
 });
